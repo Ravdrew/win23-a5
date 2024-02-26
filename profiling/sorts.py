@@ -1,4 +1,5 @@
 import random
+import cProfile
 
 
 def test_sorted(fn, iters=1000):
@@ -7,8 +8,8 @@ def test_sorted(fn, iters=1000):
         assert fn(l) == sorted(l)
         # print(fn.__name__, fn(l))
 
+#@profile
 def insertionsort(array):
-
     for i in range(len(array)):
         j = i-1
         v = array[i]
@@ -18,6 +19,7 @@ def insertionsort(array):
         array[j+1] = v
     return array
 
+#@profile
 def quicksort(array):
     if len(array) <= 1:
         return array
@@ -26,6 +28,7 @@ def quicksort(array):
     right = [i for i in array[1:] if i >= pivot]
     return quicksort(left) + [pivot] + quicksort(right)
 
+#@profile
 def quicksort_inplace(array, low=0, high=None):
     if len(array) <= 1:
         return array
@@ -45,7 +48,10 @@ def quicksort_inplace(array, low=0, high=None):
     quicksort_inplace(array, j+2, high)
     return array
 
-
-if __name__ == '__main__':
+def profile_test():
     for fn in [quicksort, quicksort_inplace, insertionsort]:
         test_sorted(fn)
+
+if __name__ == '__main__':
+    cProfile.run('profile_test()', sort="tottime")
+    #profile_test()
